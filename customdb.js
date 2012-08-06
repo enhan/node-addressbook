@@ -10,16 +10,13 @@ var getUserById = function(id, callback){
 
 var getAll = function(callback){
 	process.nextTick(function(){
-		console.dir(users);
 		callback(users);
 	});
 };
 
 var addUser= function(user,callback){
-	console.dir(user);
 	process.nextTick(function(){
 		users.push(user);
-		console.dir(users);
 		callback();
 	});
 }

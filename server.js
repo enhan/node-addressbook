@@ -1,40 +1,51 @@
 var express = require('express');
+var customdb = require('./customdb');
+
 var app=express();
 
-var user1 = { name : "JC",email :"jc@mail.com"};
-var user2 = { name : "Claude",email :"claude@mail.com"};	
-var users = [user1,user2];
-
 app.get('/', function(request, response){
-	console.log("Request on /");
-	response.writeHead(200,{"Content-Type":"text/plain"});
+	response.writeHead(200,{"Content-Type":"text/html"});
 	response.write("Hello world");
 	response.end();
 });
 
 app.get('/user', function(request, response){
-	console.log("Request on /user");
-	response.writeHead(200,{"Content-Type":"application/json"});
-	response.write(JSON.stringify(users));
-	response.end();
+	customdb.getAll(function(users){
+			response.writeHead(200,{"Content-Type":"application/json"});
+			response.write(JSON.stringify(users));
+			response.end();
+	});
+	
 });
 
 app.get('/user/:id', function(request, response){
 	var id = request.param('id');
-	console.log("Request on /user with parameter id=" + id);
-	if (id == 1){
-		response.writeHead(200,{"Content-Type":"application/json"});
-		response.write(JSON.stringify(user1));
-		response.end();
-	}else if(id ==2){
-		response.writeHead(200,{"Content-Type":"application/json"});
-		response.write(JSON.stringify(user2));
-		response.end();
-	}else{
-		response.writeHead(404);
-		response.end();
-	}
+	customdb.getUserById(id, function(user){
+		if (user != null){
+			response.writeHead(200,{"Content-Type":"application/json"});
+			response.write(JSON.stringify(user));
+			response.end();
+		}else{
+			response.writeHead(404, {"Content-Type":"text/plain"});
+			response.write("Not Found");
+			response.end();
+		}
+	});
+	
 });
 
+app.post('/user', function(request, response){
+	request.setEncoding("utf8");
+	var requestContent = "";
+	request.addListener("data",function(part){
+		requestContent += part;
+	});
+	request.addListener("end", function(){
+			customdb.addUser(JSON.parse(requestContent), function(){
+			response.writeHead(200,{"Content-Type":"application/json"});
+			response.end();
+ 		});
+	});
+});
 
 app.listen(8081);
