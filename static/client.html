@@ -25,12 +25,27 @@
 </div>
 
 	<div class="container">
+		<div class="row">
+			<div class="span12">
+			<form class="well form-inline">
+				<input type="text" id="name" name="name" placeholder="Name" class="span3"/>
+				<input type="email" id="email" name="email" placeholder="Email address" class="span3"/>
+				<button type="submit" class="btn" id="submit">Create</button>
+			</form>
+			</div>
+		</div>
+		<h1>Addresses</h1>
+		<div class="row">
+				<table class="table table-bordered table-striped span12">
+					<thead>
+						<tr><th>Name</th><th>Email</th></tr>
+					</thead>
+					<tbody id="addresses">
+						
+					</tbody>
+				</table>
+		</div>
 		
-		<form class="well form-inline">
-		<input type="text" id="name" name="name" placeholder="Name" class="span3"/>
-		<input type="email" id="email" name="email" placeholder="Email address" class="span3"/>
-		<button type="submit" class="btn btn-primary" id="submit">Create</button>
-		</form>
 	</div>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="./script/client.js"></script> 
